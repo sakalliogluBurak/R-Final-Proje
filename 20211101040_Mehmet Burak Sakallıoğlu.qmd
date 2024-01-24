@@ -1,0 +1,195 @@
+---
+title: "R ile İstatistiksel Programlama Final Projesi"
+author: "Mehmet Burak Sakallıoğlu"
+date: today
+date-format: "D MMMM YYYY"
+format: 
+   html: default
+   pdf: default
+editor: visual
+---
+
+```{r}
+library(readr)
+izci_sayısı <- read_csv("izci sayısı.csv", 
+    col_types = cols(`_id` = col_character(), 
+        Yil = col_double(), `Canakkale Milli Bilinc Kampi` = col_number(), 
+        `Yaz Kampi` = col_number(), `Kis Kampi ve Diger` = col_number()), 
+    locale = locale(decimal_mark = ","))
+View(izci_sayısı)
+```
+
+```{r}
+#| echo: false
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(readr))
+suppressPackageStartupMessages(library(tidyr))
+```
+
+## Veri Hakkında Bilgi
+
+Veri kümesi 2004 yılından itibaren gerçekleştirilen izci kamplarına katılan kişi sayılarını içermektedir. Kamplar Çanakkale Milli Bilinç Kampı, Yaz Kampı, Kış Kampı ve diğerleri olarak ayrıştırılmıştır.
+
+**Türkiye İzcilik Federasyonu ile iş birliği çerçevesinde gerçekleştirilen İzcilik Faaliyetleri Federasyonla iş birliğinin sonlanmasından dolayı 2020 ve ilerleyen yılları da kapsamak üzere gerçekleştirilmeyeceğinden bu veri seti güncellenemeyecektir.**
+
+Verinin alındığı site: <https://data.ibb.gov.tr/dataset/izci-kamplarina-katilan-kisi-sayisi>
+
+```{r}
+library(readr)
+izci_sayısı <- read_csv("izci sayısı.csv", 
+    col_types = cols(`_id` = col_character(), 
+        Yil = col_double(), `Canakkale Milli Bilinc Kampi` = col_number(), 
+        `Yaz Kampi` = col_number(), `Kis Kampi ve Diger` = col_number()), 
+    locale = locale(decimal_mark = ","))
+View(izci_sayısı)
+print(izci_sayısı)
+```
+
+### Boş gözlemleri bulmak için yapılan işlemler aşağıdadır:
+
+```{r}
+is.na(izci_sayısı)
+which(is.na(izci_sayısı))
+sum(is.na(izci_sayısı))
+```
+
+### Doldurma yöntemi hakkında bilgi:
+
+Bu bölümde boş gözlemler doldurulacaktır. Bunun için boş gözlemler yerine boş gözlemin bulunduğu sütunun ortalama değeri hesaplanıp eklenecektir.
+
+```{r}
+boş_gözlemler <- is.na(izci_sayısı)
+boş_gözlemler
+library(dplyr)
+izci_ortalamasi <- izci_sayısı %>%
+  summarise(Ortalama_Izci = mean(`Canakkale Milli Bilinc Kampi`, na.rm = TRUE),
+            Ortalama_Yaz_Kampi = mean(`Yaz Kampi`, na.rm = TRUE),
+            Ortalama_Kis_Kampi = mean(`Kis Kampi ve Diger`, na.rm = TRUE))
+print(izci_ortalamasi)
+```
+
+**Bu bölümde her sütunun ortalaması bulunmuştur. Şimdi bu ortalamalara göre boş değerler doldurulacaktır.**
+
+```{r}
+library(dplyr)
+library(tidyr)
+
+ortalama_degerler <- izci_sayısı %>%
+  summarise(Ortalama_Izci = mean(`Canakkale Milli Bilinc Kampi`, na.rm = TRUE),
+            Ortalama_Yaz_Kampi = mean(`Yaz Kampi`, na.rm = TRUE),
+            Ortalama_Kis_Kampi = mean(`Kis Kampi ve Diger`, na.rm = TRUE))
+
+izci_sayısı <- izci_sayısı %>%
+  mutate(`Canakkale Milli Bilinc Kampi` = coalesce(`Canakkale Milli Bilinc Kampi`, ortalama_degerler$Ortalama_Izci),
+         `Yaz Kampi` = coalesce(`Yaz Kampi`, ortalama_degerler$Ortalama_Yaz_Kampi),
+         `Kis Kampi ve Diger` = coalesce(`Kis Kampi ve Diger`, ortalama_degerler$Ortalama_Kis_Kampi))
+
+View(izci_sayısı)
+print(izci_sayısı)
+```
+
+Verideki boş değerler doldurulmuştur.
+
+# **Veri Analizi:**
+
+Bu bölümde verinin boş gözlem bulunmayan son hali analiz edilecektir.
+
+```{r}
+summary(izci_sayısı)
+```
+
+```{r}
+lm(izci_sayısı)
+```
+
+## 1. Grafik
+
+Burada Çanakkale Milli Bilinç Kampı İzci sayılarının yıllara göre değişimi çizgi grafiği yardımıyla gösterilmiştir.
+
+```{r}
+library(ggplot2)
+
+ggplot(izci_sayısı, aes(x = Yil, y = `Canakkale Milli Bilinc Kampi`)) +
+  geom_line() +
+  labs(title = "Canakkale Milli Bilinc Kampi Izci Sayilari",
+       x = "Yil",
+       y = "Izci Sayisi")
+```
+
+## 2. Grafik
+
+Burada Yaz Kampı İzci sayılarının yıllara göre değişimi çizgi grafiği yardımıyla gösterilmiştir.
+
+```{r}
+library(ggplot2)
+
+ggplot(izci_sayısı, aes(x = Yil, y = `Yaz Kampi`)) +
+  geom_line() +
+  labs(title = "Yaz Kampı Izci Sayıları",
+       x = "Yıl",
+       y = "Izci Sayısı")
+
+```
+
+## 3. Grafik
+
+Burada Çanakkale Kış Kampı ve Diğer Kamplardaki İzci sayılarının yıllara göre değişimi histogram grafiği yardımıyla gösterilmiştir.
+
+```{r}
+library(ggplot2)
+
+ggplot(izci_sayısı, aes(x = Yil, y = `Kis Kampi ve Diger`, fill = as.factor(Yil))) +
+  geom_bar(stat = "identity") +
+  labs(title = "Çanakkale Kış Kampı ve Diğer Kamplar Izci Sayıları",
+       x = "Yıl",
+       y = "Izci Sayısı")
+
+```
+
+## 4. Grafik
+
+Çanakkale Milli Bilinç Kampı, Yaz Kampı ve Kış Kampı için izci sayılarını karşılaştırmak amacıyla bir grafik oluşturmak için, bu üç kamp türünün izci sayılarını aynı grafik üzerinde gösteren bir çizgi grafiği örneği aşağıda verilmiştir:
+
+```{r}
+library(ggplot2)
+genisletilmis_veri <- izci_sayısı %>%
+  pivot_longer(cols = c("Canakkale Milli Bilinc Kampi", "Yaz Kampi", "Kis Kampi ve Diger"),
+               names_to = "Kamp_Turu", 
+               values_to = "Izci_Sayisi")
+
+ggplot(genisletilmis_veri, aes(x = Yil, y = Izci_Sayisi, color = Kamp_Turu)) +
+  geom_line() +
+  labs(title = "Çanakkale Kamp Türleri İzci Sayıları Karşılaştırması",
+       x = "Yıl",
+       y = "Izci Sayısı",
+       color = "Kamp Türü") +
+  scale_color_manual(values = c("Canakkale Milli Bilinc Kampi" = "blue",
+                                "Yaz Kampi" = "green",
+                                "Kis Kampi ve Diger" = "red"))
+
+```
+
+## Grafik Yorum
+
+Grafik üzerinden Çanakkale Milli Bilinç Kampı, Yaz Kampı ve Kış Kampı arasındaki farkları yorumlamak için şu gözlemler yapılabilir:
+
+1.  **Çanakkale Milli Bilinç Kampı:**
+
+    -   Çanakkale Milli Bilinç Kampı'nın izci sayıları genellikle yıl boyunca stabil, Kış Kampı ve diğer kamp türlerine göre daha yüksek.
+
+    -   Çanakkale'nin tarihi önemi, kampın özel etkinlikleri ve milli bilinç ağırlıklı programlar, katılımı artırabilir.
+
+2.  **Yaz Kampı:**
+
+    -   Yaz Kampı'nın izci sayıları genellikle yılın belirli dönemlerinde artış gösterir.
+
+    -   Sıcak hava, yaz tatili ve turistik çekicilikler, yaz kampının diğer kamp türlerine göre daha fazla katılımcı çekmesine neden olabilir.
+
+3.  **Kış Kampı ve Diğer Kamplar:**
+
+    -   Kış Kampı'nın izci sayıları genellikle diğer kamp türlerine göre daha düşük.
+
+    -   Soğuk hava koşulları, okul dönemi ve kış tatilleri, kış kampına katılımı sınırlayabilir.
+
+Genel olarak, Çanakkale Milli Bilinç Kampı'nın tarihsel ve kültürel içeriği, Yaz Kampı'nın turistik çekiciliği ve sıcak hava avantajları, izci katılımını artırabilir. Kış Kampı ise diğer mevsimlere göre daha sınırlı bir katılıma sahip olabilir. Her bir kamp türü, kendine özgü etkinlikleri, hedef kitlesi ve çekicilikleri ile farklı izci profillerini hedefleyebilir.
