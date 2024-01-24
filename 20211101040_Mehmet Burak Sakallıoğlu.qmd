@@ -43,8 +43,8 @@ library(naniar)
 is.na(izci_sayısı)
 which(is.na(izci_sayısı))
 sum(is.na(izci_sayısı))
-Amelia::missmap(izci_sayısı)
-vis_miss(izci_sayısı)
+Amelia::missmap(izci_sayısı[,-1])
+vis_miss(izci_sayısı[,-1])
 ```
 
 ### Doldurma yöntemi hakkında bilgi:
@@ -89,12 +89,12 @@ Verideki boş değerler doldurulmuştur.
 Bu bölümde verinin boş gözlem bulunmayan son hali analiz edilecektir.
 
 ```{r}
-summary(izci_sayısı)
+summary(izci_sayısı[,-2])
 ```
 
 ```{r}
-lm(izci_sayısı)
-summary(lm(izci_sayısı))
+lm(izci_sayısı[,-2])
+summary(lm(izci_sayısı[,-2]))
 ```
 
 ## 1. Grafik
