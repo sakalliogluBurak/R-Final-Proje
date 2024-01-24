@@ -39,10 +39,12 @@ print(izci_sayısı)
 ### Boş gözlemleri bulmak için yapılan işlemler aşağıdadır:
 
 ```{r}
+library(naniar)
 is.na(izci_sayısı)
 which(is.na(izci_sayısı))
 sum(is.na(izci_sayısı))
 Amelia::missmap(izci_sayısı)
+vis_miss(izci_sayısı)
 ```
 
 ### Doldurma yöntemi hakkında bilgi:

@@ -156,7 +156,8 @@ e.g.:
 <section id="boş-gözlemleri-bulmak-için-yapılan-işlemler-aşağıdadır" class="level3">
 <h3 class="anchored" data-anchor-id="boş-gözlemleri-bulmak-için-yapılan-işlemler-aşağıdadır">Boş gözlemleri bulmak için yapılan işlemler aşağıdadır:</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(izci_sayısı)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(izci_sayısı)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        _id   Yil Canakkale Milli Bilinc Kampi Yaz Kampi Kis Kampi ve Diger
  [1,] FALSE FALSE                         TRUE     FALSE               TRUE
@@ -199,14 +200,22 @@ Unknown or uninitialised column: `arguments`.</code></pre>
 </figure>
 </div>
 </div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vis_miss</span>(izci_sayısı)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="20211101040_Mehmet-Burak-Sakallıoğlu_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 <section id="doldurma-yöntemi-hakkında-bilgi" class="level3">
 <h3 class="anchored" data-anchor-id="doldurma-yöntemi-hakkında-bilgi">Doldurma yöntemi hakkında bilgi:</h3>
 <p>Bu bölümde boş gözlemler doldurulacaktır. Bunun için boş gözlemler yerine boş gözlemin bulunduğu sütunun ortalama değeri hesaplanıp eklenecektir.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>boş_gözlemler <span class="ot">&lt;-</span> <span class="fu">is.na</span>(izci_sayısı)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>boş_gözlemler</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>boş_gözlemler <span class="ot">&lt;-</span> <span class="fu">is.na</span>(izci_sayısı)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>boş_gözlemler</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        _id   Yil Canakkale Milli Bilinc Kampi Yaz Kampi Kis Kampi ve Diger
  [1,] FALSE FALSE                         TRUE     FALSE               TRUE
@@ -226,12 +235,12 @@ Unknown or uninitialised column: `arguments`.</code></pre>
 [15,] FALSE FALSE                        FALSE     FALSE              FALSE
 [16,] FALSE FALSE                        FALSE     FALSE              FALSE</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>izci_ortalamasi <span class="ot">&lt;-</span> izci_sayısı <span class="sc">%&gt;%</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Ortalama_Izci =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Canakkale Milli Bilinc Kampi</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">Ortalama_Yaz_Kampi =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Yaz Kampi</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">Ortalama_Kis_Kampi =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Kis Kampi ve Diger</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(izci_ortalamasi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>izci_ortalamasi <span class="ot">&lt;-</span> izci_sayısı <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Ortalama_Izci =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Canakkale Milli Bilinc Kampi</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">Ortalama_Yaz_Kampi =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Yaz Kampi</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">Ortalama_Kis_Kampi =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Kis Kampi ve Diger</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(izci_ortalamasi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 3
   Ortalama_Izci Ortalama_Yaz_Kampi Ortalama_Kis_Kampi
@@ -241,21 +250,21 @@ Unknown or uninitialised column: `arguments`.</code></pre>
 </div>
 <p><strong>Bu bölümde her sütunun ortalaması bulunmuştur. Şimdi bu ortalamalara göre boş değerler doldurulacaktır.</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>ortalama_degerler <span class="ot">&lt;-</span> izci_sayısı <span class="sc">%&gt;%</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Ortalama_Izci =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Canakkale Milli Bilinc Kampi</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">Ortalama_Yaz_Kampi =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Yaz Kampi</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">Ortalama_Kis_Kampi =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Kis Kampi ve Diger</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>izci_sayısı <span class="ot">&lt;-</span> izci_sayısı <span class="sc">%&gt;%</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Canakkale Milli Bilinc Kampi</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">coalesce</span>(<span class="st">`</span><span class="at">Canakkale Milli Bilinc Kampi</span><span class="st">`</span>, ortalama_degerler<span class="sc">$</span>Ortalama_Izci),</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Yaz Kampi</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">coalesce</span>(<span class="st">`</span><span class="at">Yaz Kampi</span><span class="st">`</span>, ortalama_degerler<span class="sc">$</span>Ortalama_Yaz_Kampi),</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Kis Kampi ve Diger</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">coalesce</span>(<span class="st">`</span><span class="at">Kis Kampi ve Diger</span><span class="st">`</span>, ortalama_degerler<span class="sc">$</span>Ortalama_Kis_Kampi))</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(izci_sayısı)</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(izci_sayısı)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>ortalama_degerler <span class="ot">&lt;-</span> izci_sayısı <span class="sc">%&gt;%</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Ortalama_Izci =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Canakkale Milli Bilinc Kampi</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">Ortalama_Yaz_Kampi =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Yaz Kampi</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">Ortalama_Kis_Kampi =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Kis Kampi ve Diger</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>izci_sayısı <span class="ot">&lt;-</span> izci_sayısı <span class="sc">%&gt;%</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Canakkale Milli Bilinc Kampi</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">coalesce</span>(<span class="st">`</span><span class="at">Canakkale Milli Bilinc Kampi</span><span class="st">`</span>, ortalama_degerler<span class="sc">$</span>Ortalama_Izci),</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Yaz Kampi</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">coalesce</span>(<span class="st">`</span><span class="at">Yaz Kampi</span><span class="st">`</span>, ortalama_degerler<span class="sc">$</span>Ortalama_Yaz_Kampi),</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Kis Kampi ve Diger</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">coalesce</span>(<span class="st">`</span><span class="at">Kis Kampi ve Diger</span><span class="st">`</span>, ortalama_degerler<span class="sc">$</span>Ortalama_Kis_Kampi))</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(izci_sayısı)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(izci_sayısı)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 16 × 5
    `_id`   Yil `Canakkale Milli Bilinc Kampi` `Yaz Kampi` `Kis Kampi ve Diger`
@@ -285,7 +294,7 @@ Unknown or uninitialised column: `arguments`.</code></pre>
 <h1><strong>Veri Analizi:</strong></h1>
 <p>Bu bölümde verinin boş gözlem bulunmayan son hali analiz edilecektir.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(izci_sayısı)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(izci_sayısı)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     _id                 Yil       Canakkale Milli Bilinc Kampi   Yaz Kampi    
  Length:16          Min.   :2004   Min.   :1100                 Min.   : 1000  
@@ -304,7 +313,7 @@ Unknown or uninitialised column: `arguments`.</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(izci_sayısı)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(izci_sayısı)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -323,13 +332,13 @@ Coefficients:
 <h2 class="anchored" data-anchor-id="grafik">1. Grafik</h2>
 <p>Burada Çanakkale Milli Bilinç Kampı İzci sayılarının yıllara göre değişimi çizgi grafiği yardımıyla gösterilmiştir.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(izci_sayısı, <span class="fu">aes</span>(<span class="at">x =</span> Yil, <span class="at">y =</span> <span class="st">`</span><span class="at">Canakkale Milli Bilinc Kampi</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Canakkale Milli Bilinc Kampi Izci Sayilari"</span>,</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Yil"</span>,</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Izci Sayisi"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(izci_sayısı, <span class="fu">aes</span>(<span class="at">x =</span> Yil, <span class="at">y =</span> <span class="st">`</span><span class="at">Canakkale Milli Bilinc Kampi</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Canakkale Milli Bilinc Kampi Izci Sayilari"</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Yil"</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Izci Sayisi"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -343,13 +352,13 @@ Coefficients:
 <h2 class="anchored" data-anchor-id="grafik-1">2. Grafik</h2>
 <p>Burada Yaz Kampı İzci sayılarının yıllara göre değişimi çizgi grafiği yardımıyla gösterilmiştir.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(izci_sayısı, <span class="fu">aes</span>(<span class="at">x =</span> Yil, <span class="at">y =</span> <span class="st">`</span><span class="at">Yaz Kampi</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Yaz Kampı Izci Sayıları"</span>,</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Yıl"</span>,</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Izci Sayısı"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(izci_sayısı, <span class="fu">aes</span>(<span class="at">x =</span> Yil, <span class="at">y =</span> <span class="st">`</span><span class="at">Yaz Kampi</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Yaz Kampı Izci Sayıları"</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Yıl"</span>,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Izci Sayısı"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -363,13 +372,13 @@ Coefficients:
 <h2 class="anchored" data-anchor-id="grafik-2">3. Grafik</h2>
 <p>Burada Çanakkale Kış Kampı ve Diğer Kamplardaki İzci sayılarının yıllara göre değişimi histogram grafiği yardımıyla gösterilmiştir.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(izci_sayısı, <span class="fu">aes</span>(<span class="at">x =</span> Yil, <span class="at">y =</span> <span class="st">`</span><span class="at">Kis Kampi ve Diger</span><span class="st">`</span>, <span class="at">fill =</span> <span class="fu">as.factor</span>(Yil))) <span class="sc">+</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Çanakkale Kış Kampı ve Diğer Kamplar Izci Sayıları"</span>,</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Yıl"</span>,</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Izci Sayısı"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(izci_sayısı, <span class="fu">aes</span>(<span class="at">x =</span> Yil, <span class="at">y =</span> <span class="st">`</span><span class="at">Kis Kampi ve Diger</span><span class="st">`</span>, <span class="at">fill =</span> <span class="fu">as.factor</span>(Yil))) <span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Çanakkale Kış Kampı ve Diğer Kamplar Izci Sayıları"</span>,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Yıl"</span>,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Izci Sayısı"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -383,21 +392,21 @@ Coefficients:
 <h2 class="anchored" data-anchor-id="grafik-3">4. Grafik</h2>
 <p>Çanakkale Milli Bilinç Kampı, Yaz Kampı ve Kış Kampı için izci sayılarını karşılaştırmak amacıyla bir grafik oluşturmak için, bu üç kamp türünün izci sayılarını aynı grafik üzerinde gösteren bir çizgi grafiği örneği aşağıda verilmiştir:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>genisletilmis_veri <span class="ot">&lt;-</span> izci_sayısı <span class="sc">%&gt;%</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"Canakkale Milli Bilinc Kampi"</span>, <span class="st">"Yaz Kampi"</span>, <span class="st">"Kis Kampi ve Diger"</span>),</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"Kamp_Turu"</span>, </span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Izci_Sayisi"</span>)</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(genisletilmis_veri, <span class="fu">aes</span>(<span class="at">x =</span> Yil, <span class="at">y =</span> Izci_Sayisi, <span class="at">color =</span> Kamp_Turu)) <span class="sc">+</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Çanakkale Kamp Türleri İzci Sayıları Karşılaştırması"</span>,</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Yıl"</span>,</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Izci Sayısı"</span>,</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Kamp Türü"</span>) <span class="sc">+</span></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Canakkale Milli Bilinc Kampi"</span> <span class="ot">=</span> <span class="st">"blue"</span>,</span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Yaz Kampi"</span> <span class="ot">=</span> <span class="st">"green"</span>,</span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Kis Kampi ve Diger"</span> <span class="ot">=</span> <span class="st">"red"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>genisletilmis_veri <span class="ot">&lt;-</span> izci_sayısı <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"Canakkale Milli Bilinc Kampi"</span>, <span class="st">"Yaz Kampi"</span>, <span class="st">"Kis Kampi ve Diger"</span>),</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"Kamp_Turu"</span>, </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Izci_Sayisi"</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(genisletilmis_veri, <span class="fu">aes</span>(<span class="at">x =</span> Yil, <span class="at">y =</span> Izci_Sayisi, <span class="at">color =</span> Kamp_Turu)) <span class="sc">+</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Çanakkale Kamp Türleri İzci Sayıları Karşılaştırması"</span>,</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Yıl"</span>,</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Izci Sayısı"</span>,</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Kamp Türü"</span>) <span class="sc">+</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Canakkale Milli Bilinc Kampi"</span> <span class="ot">=</span> <span class="st">"blue"</span>,</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Yaz Kampi"</span> <span class="ot">=</span> <span class="st">"green"</span>,</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Kis Kampi ve Diger"</span> <span class="ot">=</span> <span class="st">"red"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
