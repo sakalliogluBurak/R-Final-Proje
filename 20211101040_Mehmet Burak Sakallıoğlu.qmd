@@ -10,16 +10,6 @@ editor: visual
 ---
 
 ```{r}
-library(readr)
-izci_sayısı <- read_csv("izci sayısı.csv", 
-    col_types = cols(`_id` = col_character(), 
-        Yil = col_double(), `Canakkale Milli Bilinc Kampi` = col_number(), 
-        `Yaz Kampi` = col_number(), `Kis Kampi ve Diger` = col_number()), 
-    locale = locale(decimal_mark = ","))
-View(izci_sayısı)
-```
-
-```{r}
 #| echo: false
 suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(dplyr))
@@ -52,6 +42,7 @@ print(izci_sayısı)
 is.na(izci_sayısı)
 which(is.na(izci_sayısı))
 sum(is.na(izci_sayısı))
+Amelia::missmap(izci_sayısı)
 ```
 
 ### Doldurma yöntemi hakkında bilgi:
