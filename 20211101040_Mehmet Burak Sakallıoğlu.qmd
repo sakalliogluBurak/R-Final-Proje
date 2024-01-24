@@ -94,6 +94,7 @@ summary(izci_sayısı)
 
 ```{r}
 lm(izci_sayısı)
+summary(lm(izci_sayısı))
 ```
 
 ## 1. Grafik
