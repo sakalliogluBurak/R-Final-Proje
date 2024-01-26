@@ -11,10 +11,7 @@ editor: visual
 
 ```{r}
 #| echo: false
-suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(dplyr))
-suppressPackageStartupMessages(library(readr))
-suppressPackageStartupMessages(library(tidyr))
 ```
 
 ## Veri Hakkında Bilgi
@@ -36,7 +33,9 @@ View(izci_sayısı)
 print(izci_sayısı)
 ```
 
-### Boş gözlemleri bulmak için yapılan işlemler aşağıdadır:
+### Boş Gözlemleri Bulma
+
+Bu bölümde boş gözlemlerin yeri ve sayısı bulunacaktır. Ardından eksik veriler grafik yardımıyla gösterilecektir.
 
 ```{r}
 library(naniar)
@@ -47,7 +46,9 @@ Amelia::missmap(izci_sayısı[,-1])
 vis_miss(izci_sayısı[,-1])
 ```
 
-### Doldurma yöntemi hakkında bilgi:
+------------------------------------------------------------------------------------------------------------------
+
+### Doldurma Yöntemi
 
 Bu bölümde boş gözlemler doldurulacaktır. Bunun için boş gözlemler yerine boş gözlemin bulunduğu sütunun ortalama değeri hesaplanıp eklenecektir.
 
@@ -84,11 +85,14 @@ print(izci_sayısı)
 
 Verideki boş değerler doldurulmuştur.
 
-# **Veri Analizi:**
+------------------------------------------------------------------------------------------------------------------
 
-Bu bölümde verinin boş gözlem bulunmayan son hali analiz edilecektir.
+# **Veri Analizi**
+
+Bu bölümde verinin boş gözlem bulunmayan son hali analiz edilecektir. Önce verinin kaç satır ve sütun olduğuna bakılacaktır. Ardından verinin özet istatistikleri, regresyon modeli ve bu modelin sonuçlarını özetleme seklinde olacaktır.
 
 ```{r}
+dim(izci_sayısı)
 summary(izci_sayısı[,-2])
 ```
 
